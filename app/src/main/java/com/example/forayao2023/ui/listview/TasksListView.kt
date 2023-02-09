@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeToDismiss
@@ -49,10 +50,8 @@ fun TasksListView(modifier: Modifier) {
                 .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             content = {
-                timeoutTasksList.forEach { tsk ->
-                    item {
-                        TimeoutTasksListItem(task = tsk, modifier = Modifier, vm = vm)
-                    }
+                items(timeoutTasksList){tsk->
+                    TimeoutTasksListItem(task = tsk, modifier = Modifier, vm = vm)
                 }
                 if (timeoutTasksList.isNotEmpty() && (norTasksList.isNotEmpty() || memoTasksList.isNotEmpty() || finishedTasksList.isNotEmpty()))
                     item {
@@ -62,10 +61,8 @@ fun TasksListView(modifier: Modifier) {
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
                     }
-                for (tsk in norTasksList) {
-                    item {
-                        NorTasksListItem(task = tsk, modifier = Modifier, vm = vm)
-                    }
+                items(norTasksList){tsk->
+                    NorTasksListItem(task = tsk, modifier = Modifier, vm = vm)
                 }
                 // divider
                 if (norTasksList.isNotEmpty() && (memoTasksList.isNotEmpty() || finishedTasksList.isNotEmpty()))
@@ -76,10 +73,8 @@ fun TasksListView(modifier: Modifier) {
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
                     }
-                for (tsk in memoTasksList) {
-                    item {
-                        MemoTasksListItem(task = tsk, modifier = Modifier, vm = vm)
-                    }
+                items(memoTasksList){tsk->
+                    MemoTasksListItem(task = tsk, modifier = Modifier, vm = vm)
                 }
                 // divider
                 if (memoTasksList.isNotEmpty() && finishedTasksList.isNotEmpty())
@@ -90,17 +85,15 @@ fun TasksListView(modifier: Modifier) {
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
                     }
-                for (tsk in finishedTasksList) {
-                    item {
-                        when (tsk.type) {
-                            TaskEnum.TASK_TYPE_NORMAL -> {
-                                NorTasksListItem(task = tsk, modifier = Modifier, vm = vm)
-                            }
-                            TaskEnum.TASK_TYPE_MEMO -> {
-                                MemoTasksListItem(task = tsk, modifier = Modifier, vm = vm)
-                            }
-                            else -> {}
+                items(finishedTasksList){tsk->
+                    when (tsk.type) {
+                        TaskEnum.TASK_TYPE_NORMAL -> {
+                            NorTasksListItem(task = tsk, modifier = Modifier, vm = vm)
                         }
+                        TaskEnum.TASK_TYPE_MEMO -> {
+                            MemoTasksListItem(task = tsk, modifier = Modifier, vm = vm)
+                        }
+                        else -> {}
                     }
                 }
             }
